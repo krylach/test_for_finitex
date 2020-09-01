@@ -15,7 +15,7 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('number', 16);
+            $table->string('number', 16)->unique();
             $table->foreignId('user_id');
             $table->foreignId('currency_id');
             $table->double('amount', 12, 4);

@@ -20,3 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group(['prefix' => 'account', 'middleware' => ['auth']], function () {
+    Route::post('create', 'Finances\AccountController@create')->name('account.create');
+});
