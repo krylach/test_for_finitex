@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Account extends Model
 {
@@ -12,5 +13,10 @@ class Account extends Model
     public function currency()
     {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+
+    public function belongs($account)
+    {
+        return count(Auth::user()->accounts()->where('number', $account)->get()) > 0;
     }
 }

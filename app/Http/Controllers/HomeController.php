@@ -24,11 +24,13 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('home', [
+            'all_accounts' => Account::all(),
             'accounts' => Auth::user()->accounts,
-            'currencies' => Currency::all()
+            'currencies' => Currency::all(),
+            'request' => $request->all()
         ]);
     }
 }

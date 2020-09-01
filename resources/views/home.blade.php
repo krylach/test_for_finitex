@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <div class="card">
                 <div class="card-header">{{ __('Мои счета') }}</div>
 
@@ -55,12 +55,53 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card">
                 <div class="card-header">{{ __('Перевод средств') }}</div>
 
                 <div class="card-body">
+                <form action="{{route('account.transaction')}}" method="post">
+                        <div class="form-group">
+                            <label for="from">Откуда:</label>
+                            <select class="form-control" name="from" id="from">
+                                @if ($accounts)
+                                    @foreach ($accounts as $account)
+                                        <option value="{{$account->number}}">{{$account->number}} ({{$account->amount}} {{$account->currency->title}})</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('from') }}</strong>
+                            </span>
+                        </div>
+                               
+                        <div class="form-group">
+                            <label for="from">Куда:</label>
+                            <select class="form-control" name="to" id="to">
+                                @if ($all_accounts)
+                                    @foreach ($all_accounts as $account)
+                                    <option value="{{$account->number}}">{{$account->number}} (*.** {{$account->currency->title}})</option>
+                                    @endforeach
+                                @endif
+                            </select>
 
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('to') }}</strong>
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sum">Сумма перевода:</label>
+                            <input type="number" name="sum" min="0.0001" step="0.0001" value="0.01" class="form-control">
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('sum') }}</strong>
+                            </span>
+                        </div>
+                        {{ csrf_field() }}
+                        <div class="form-group d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success">Перевести</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
