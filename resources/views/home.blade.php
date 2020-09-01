@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-5">
             <div class="card">
@@ -14,6 +14,7 @@
                                 <th scope="col">Номер счёта</th>
                                 <th scope="col">Валюта</th>
                                 <th scope="col">Баланс</th>
+                                <th scope="col">Действие</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -23,6 +24,13 @@
                                         <td>{{$account->number}}</td>
                                         <td>{{$account->currency->title}}</td>
                                         <td>{{$account->amount}} {{$account->currency->title}}</td>
+                                        <td>
+                                            <form action="{{route('account.close')}}" method="post">
+                                                {{ csrf_field() }}
+                                                <input type="hidden" name="account" value="{{$account->number}}">
+                                                <button type="submit" class="btn btn-danger">Закрыть</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             @else

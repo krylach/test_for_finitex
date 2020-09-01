@@ -34,6 +34,25 @@ class AccountController extends \App\Http\Controllers\Controller
         return redirect()->back();
     }
 
+    public function close(Request $request, Account $account)
+    {
+        $validator = Validator::make($request->only('account'), [
+            'account' => 'required|exists:accounts,number'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator);
+        }
+
+        if (!$account->belongs($request->account)) {
+            return back()->withErros(['from' => ['Такого счёта не существует!']]);
+        }
+
+        $account->where('number', $request->account)->first()->delete();
+
+        return redirect()->back();
+    }
+
     public function transaction(Request $request, Account $account)
     {
         $validator = Validator::make($request->only('from', 'to', 'sum'), [
